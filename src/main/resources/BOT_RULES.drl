@@ -1,0 +1,37 @@
+package com.rule
+
+import fr.castrec.stephane.DroolsSample.model.BotSession
+import fr.castrec.stephane.DroolsSample.model.Answer
+
+rule "is First question"
+	when
+		botSessionObject: BotSession(nbAnswered() == 0)
+	then
+        System.out.println("Have to ask first question");
+        botSessionObject.setNextQuestion(60);
+    end
+
+
+rule "previous id 60, response 1 or 2"
+	when
+		botSessionObject: BotSession(nbAnswered() >0 && getLastAnswer().questionId == 60)
+	then
+        System.out.println("Have to ask question 70");
+        botSessionObject.setNextQuestion(70);
+    end
+
+rule "previous id 60, response 1 "
+	when
+		botSessionObject: BotSession(nbAnswered() >0 && getLastAnswer().questionId == 70 && getLastAnswer().responseId == 1)
+	then
+	    System.out.println("Have to ask question 71");
+        botSessionObject.setNextQuestion(71);
+    end
+
+rule "previous id 70, response 2 "
+	when
+		botSessionObject: BotSession(nbAnswered() >0 && getLastAnswer().questionId == 70 && getLastAnswer().responseId == 2)
+	then
+        System.out.println("Have to ask question 72");
+        botSessionObject.setNextQuestion(72);
+    end
